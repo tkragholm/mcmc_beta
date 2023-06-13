@@ -2,6 +2,7 @@ extern crate plotters;
 extern crate rand;
 extern crate statrs;
 
+use num_format::{Locale, ToFormattedString};
 use plotters::prelude::*;
 use rand::distributions::{Distribution, Uniform};
 use rand::Rng;
@@ -142,7 +143,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             &RED,
         )))
         .unwrap()
-        .label(format!("Beta({:.2}, {:.2})", alpha, beta)) // Alpha and Beta inserted here
+        .label(format!("Beta(\u{03B1}={:.2}, \u{03B2}={:.2})", alpha, beta)) // Alpha and Beta inserted here
         .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &RED));
 
     chart
@@ -151,7 +152,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             &BLUE,
         )))
         .unwrap()
-        .label(format!("MCMC (n_hops={})", n_hops)) // n_hops inserted here
+        .label(format!(
+            "MCMC (n_hops={})",
+            n_hops.to_formatted_string(&Locale::en)
+        )) // n_hops inserted here
         .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &BLUE));
 
     // Draw the legend
